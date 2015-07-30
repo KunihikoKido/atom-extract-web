@@ -1,0 +1,19 @@
+# See https://atom.io/docs/latest/hacking-atom-package-word-count#menus for more details
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'Extract Website'
+      'submenu': [
+        {
+          'label': 'Extract Link Urls'
+          'command': 'extract-web:extract-link-urls'
+        }
+        {
+          'label': 'Extract Image Urls'
+          'command': 'extract-web:extract-image-urls'
+        }
+      ]
+    ]
+  }
+]

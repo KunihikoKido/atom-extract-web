@@ -1,0 +1,25 @@
+{
+  "name": "extract-web",
+  "main": "./lib/extract-web",
+  "version": "0.0.0",
+  "description": "Extract Website for Atom",
+  "keywords": [
+  ],
+  "activationCommands": {
+    "atom-workspace": [
+      "extract-web:extract-link-urls",
+      "extract-web:extract-image-urls"
+    ]
+  },
+  "repository": "https://github.com/KunihikoKido/atom-extract-web",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+    "space-pen": "^5.1.1",
+    "atom-space-pen-views": "^2.0.5",
+    "loophole": "^1.1.0",
+    "cheerio-httpcli": "^0.3.2"
+  }
+}
