@@ -1,7 +1,7 @@
 {
   "name": "extract-web",
   "main": "./lib/extract-web",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Extract Website for Atom",
   "keywords": [],
   "activationCommands": {
