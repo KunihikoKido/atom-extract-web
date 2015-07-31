@@ -31,6 +31,10 @@ module.exports = ExtractWebsite =
       type: 'string'
       default: 'json'
       enum: ['json', 'yaml']
+    acceptLanguage:
+      title: 'Accept-Language'
+      type: 'string'
+      default: 'en'
 
   activate: (state) ->
     @subscriptions = new CompositeDisposable
@@ -56,6 +60,8 @@ module.exports = ExtractWebsite =
 
     urlPattern = atom.config.get("extract-web.urlPattern")
 
+    client.headers["Accept-Language"] =
+      atom.config.get("extract-web.acceptLanguage")
     client.setBrowser(atom.config.get("extract-web.userAgent"))
 
     client.fetch(targetUrl).then((result) ->
@@ -93,10 +99,15 @@ module.exports = ExtractWebsite =
     catch error
       return notifications.addError(error)
 
+    client.headers["Accept-Language"] =
+      atom.config.get("extract-web.acceptLanguage")
     client.setBrowser(atom.config.get("extract-web.userAgent"))
 
     client.fetch(targetUrl).then((result) ->
-      content = {url: targetUrl}
+      docInfo = result.$.documentInfo()
+      content = {url: targetUrl, urls: [targetUrl], encode: docInfo.encoding}
+      if targetUrl != docInfo.url
+        content.urls.push(docInfo.url)
 
       for property, options of extractConfig.properties
         if options.text

@@ -17,6 +17,8 @@ Extract Website for Atom.
 * User-Agent:
   * android, chrome, googlebot, ie, ios, opera, safari
   * default: chrome
+* Accept-Language:
+  * default: en
 * Extract URL Pattern:
   * default: https?://.+
 * Extract Contents Config Path:
