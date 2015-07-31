@@ -24,3 +24,31 @@ Extract Website for Atom.
 * Extract Contents Output Format:
   * json, yaml
   * default: json
+
+## Customize Extract Contents
+If you want to customize the extracted item you want is to prepare a configuration file to reference the following examples.
+
+**Example:**
+```json
+{
+  "properties": {
+    "title": {
+      "text": "title"
+    },
+    "body": {
+      "text": "body"
+    },
+    "bodyAsHtml": {
+      "html": "body"
+    },
+    "package_meta": {
+      "text": ".package-meta ul li a",
+      "isArray": true
+    },
+    "meta_description": {
+      "attr": "meta[name=description]",
+      "args": ["content"]
+    }
+  }
+}
+```
