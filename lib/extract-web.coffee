@@ -7,6 +7,7 @@ client = allowUnsafeNewFunction -> require 'cheerio-httpcli'
 urljoin = require('url').resolve
 ExtractUrlInputView = require './extract-url-input-view'
 notifications = require './notifications'
+LoadingView = require './loading-view'
 
 
 module.exports = ExtractWebsite =
@@ -58,6 +59,8 @@ module.exports = ExtractWebsite =
         placeholderText: "http://example.org/..."
       return new ExtractUrlInputView(options)
 
+    loadingView = new LoadingView()
+    loadingView.updateMessage("Extract URL: Please wait ... #{targetUrl}")
     urlPattern = atom.config.get("extract-web.urlPattern")
 
     client.headers["Accept-Language"] =
@@ -83,6 +86,8 @@ module.exports = ExtractWebsite =
       notifications.addSuccess("Extracts : #{urls.length}")
     ).catch((error) ->
       notifications.addError(error)
+    ).finally( ->
+      loadingView.finish(delay: 1000 * 1)
     )
 
   extractContents: ({targetUrl}={}) ->
@@ -98,6 +103,9 @@ module.exports = ExtractWebsite =
       extractConfig = JSON.parse(extractConfig)
     catch error
       return notifications.addError(error)
+
+    loadingView = new LoadingView()
+    loadingView.updateMessage("Extract Contents: Please wait ... #{targetUrl}")
 
     client.headers["Accept-Language"] =
       atom.config.get("extract-web.acceptLanguage")
@@ -157,6 +165,8 @@ module.exports = ExtractWebsite =
       editor.insertText(content)
     ).catch((error) ->
       notifications.addError(error)
+    ).finally( ->
+      loadingView.finish(delay: 1000 * 1)
     )
 
 
