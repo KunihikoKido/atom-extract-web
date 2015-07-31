@@ -54,3 +54,8 @@ If you want to customize the extracted item you want is to prepare a configurati
   }
 }
 ```
+
+## Screenshots
+### Extract Contents
+
+![Extract Contents Screenshot](https://raw.githubusercontent.com/KunihikoKido/atom-extract-web/master/screenshots/extract_contents.gif)
