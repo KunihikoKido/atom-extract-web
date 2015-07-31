@@ -1,5 +1,5 @@
 module.exports =
-  title: 'extract-web'
+  title: 'Extract Web'
   addInfo: (message, {dismissable}={}) ->
     atom.notifications.addInfo(
       @title, detail: message, dismissable: dismissable)

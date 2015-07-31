@@ -74,7 +74,7 @@ module.exports = ExtractWebsite =
 
       for url in urls
         editor.insertText("#{url}\r\n")
-      notifications.addInfo("#{urls.length}")
+      notifications.addSuccess("Extracts : #{urls.length}")
     ).catch((error) ->
       notifications.addError(error)
     )
