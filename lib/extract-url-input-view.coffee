@@ -10,10 +10,9 @@ module.exports =
         @label "Type url:"
         @subview 'targetUrl', new TextEditorView(mini: true, placeholderText: placeholderText)
 
-    initialize: ({callback, placeholderText, tag, attr}={}) ->
+    initialize: ({callback, placeholderText, params}={}) ->
       @callback = callback
-      @tag = tag
-      @attr = attr
+      @params = params
       @disposables = new CompositeDisposable
 
       targetUrl = localStorage.getItem("extract-web.lastUrl")
@@ -32,7 +31,7 @@ module.exports =
     confirm: ->
       targetUrl = @targetUrl.getModel().getText()
       localStorage.setItem("extract-web.lastUrl", targetUrl)
-      @callback?(targetUrl: targetUrl, tag: @tag, attr: @attr)
+      @callback?(targetUrl: targetUrl, params: @params)
       @destroy()
 
     destroy: ->

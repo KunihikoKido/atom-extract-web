@@ -9,3 +9,18 @@ Extract Website for Atom.
 
 * Extract Web: Extract Link Urls
 * Extract Web: Extract Image Urls
+* Extract Web: Extract Contents
+
+
+## Settings
+
+* User-Agent:
+  * android, chrome, googlebot, ie, ios, opera, safari
+  * default: chrome
+* Extract URL Pattern:
+  * default: https?://.+
+* Extract Contents Config Path:
+  * default: extract-web/default-config.json
+* Extract Contents Output Format:
+  * json, yaml
+  * default: json

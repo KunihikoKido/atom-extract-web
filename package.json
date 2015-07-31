@@ -7,7 +7,8 @@
   "activationCommands": {
     "atom-workspace": [
       "extract-web:extract-link-urls",
-      "extract-web:extract-image-urls"
+      "extract-web:extract-image-urls",
+      "extract-web:extract-contents"
     ]
   },
   "repository": "https://github.com/KunihikoKido/atom-extract-web",
@@ -19,6 +20,8 @@
     "space-pen": "^5.1.1",
     "atom-space-pen-views": "^2.0.5",
     "loophole": "^1.1.0",
-    "cheerio-httpcli": "^0.3.2"
+    "fs-plus": "^2.8.1",
+    "cheerio-httpcli": "^0.3.2",
+    "js-yaml": "^3.3.1"
   }
 }
