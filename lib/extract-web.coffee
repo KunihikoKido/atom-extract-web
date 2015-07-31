@@ -54,14 +54,16 @@ module.exports = ExtractWebsite =
         placeholderText: "http://example.org/..."
       return new ExtractUrlInputView(options)
 
+    urlPattern = atom.config.get("extract-web.urlPattern")
+
     client.setBrowser(atom.config.get("extract-web.userAgent"))
 
     client.fetch(targetUrl).then((result) ->
       urls = []
       result.$(params.tag).each((idx) ->
         url = urljoin(targetUrl, result.$(this).attr(params.attr))
-        pattern = atom.config.get("extract-web.urlPattern")
-        if url.match(///#{pattern}///)
+
+        if url.match(///#{urlPattern}///)
           urls.push(url)
       )
       urls = urls.unique().sort()
@@ -72,6 +74,7 @@ module.exports = ExtractWebsite =
 
       for url in urls
         editor.insertText("#{url}\r\n")
+      notifications.addInfo("#{urls.length}")
     ).catch((error) ->
       notifications.addError(error)
     )
