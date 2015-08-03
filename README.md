@@ -20,10 +20,13 @@ Extract Website for Atom.
 * Accept-Language:
   * default: en
 * Extract URL Pattern:
+  * Settings for ``Extract Link Urls`` and ``Extract Image Urls`` commands
   * default: https?://.+
 * Extract Contents Config Path:
+  * Settings for ``Extract Contents`` command.
   * default: extract-web/default-config.json
 * Extract Contents Output Format:
+  * Settings for ``Extract Contents`` command.
   * json, yaml
   * default: json
 
