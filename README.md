@@ -36,25 +36,32 @@ If you want to customize the extracted item you want is to prepare a configurati
 **Example:**
 ```json
 {
-  "properties": {
-    "title": {
-      "text": "title"
-    },
-    "body": {
-      "text": "body"
-    },
-    "bodyAsHtml": {
-      "html": "body"
-    },
-    "package_meta": {
-      "text": ".package-meta ul li a",
-      "isArray": true
-    },
-    "meta_description": {
-      "attr": "meta[name=description]",
-      "args": ["content"]
+  "target": [
+    {
+      "pattern": {
+        "url": "https://atom.io/packages/.*"
+      },
+      "properties": {
+        "title": {
+          "text": "title"
+        },
+        "body": {
+          "text": "body"
+        },
+        "bodyAsHtml": {
+          "html": "body"
+        },
+        "package_meta": {
+          "text": ".package-meta ul li a",
+          "isArray": true
+        },
+        "meta_description": {
+          "attr": "meta[name=description]",
+          "args": ["content"]
+        }
+      }
     }
-  }
+  ]
 }
 ```
 

@@ -114,41 +114,47 @@ module.exports = ExtractWebsite =
     client.fetch(targetUrl).then((result) ->
       docInfo = result.$.documentInfo()
       content = {url: targetUrl, urls: [targetUrl], encode: docInfo.encoding}
+
       if targetUrl != docInfo.url
         content.urls.push(docInfo.url)
 
-      for property, options of extractConfig.properties
-        if options.text
-          if options.isArray
-            content[property] = []
-            result.$(options.text).each((idx) ->
-              value = result.$(this).text().normalize()
-              if value.length
-                content[property].push(value)
-            )
-          else
-            content[property] = result.$(options.text).text()?.normalize()
-        else if options.html
-          if options.isArray
-            content[property] = []
-            result.$(options.html).each((idx) ->
-              value = result.$(this)._html().normalize()
-              if value.length
-                content[property].push(value)
-            )
-          else
-            content[property] = result.$(options.html)._html()?.normalize()
-        else if options.attr
-          if options.isArray
-            content[property] = []
-            result.$(options.attr).each((idx) ->
-              value = result.$(this).attr(options.args[0]).normalize()
-              if value.length
-                content[property].push(value)
-            )
-          else
-            content[property] =
-              result.$(options.attr).attr(options.args[0])?.normalize()
+      extractConfig.target ?= []
+
+      for target in extractConfig.target
+        if targetUrl.match(///#{target.pattern.url}///)
+          for property, options of target.properties
+            if options.text
+              if options.isArray
+                content[property] = []
+                result.$(options.text).each((idx) ->
+                  value = result.$(this).text().normalize()
+                  if value.length
+                    content[property].push(value)
+                )
+              else
+                content[property] = result.$(options.text).text()?.normalize()
+            else if options.html
+              if options.isArray
+                content[property] = []
+                result.$(options.html).each((idx) ->
+                  value = result.$(this)._html().normalize()
+                  if value.length
+                    content[property].push(value)
+                )
+              else
+                content[property] = result.$(options.html)._html()?.normalize()
+            else if options.attr
+              if options.isArray
+                content[property] = []
+                result.$(options.attr).each((idx) ->
+                  value = result.$(this).attr(options.args[0]).normalize()
+                  if value.length
+                    content[property].push(value)
+                )
+              else
+                content[property] =
+                  result.$(options.attr).attr(options.args[0])?.normalize()
+          break
 
       return content
     ).then((content) ->

@@ -1,86 +1,93 @@
 {
-  "properties": {
-    "title": {
-      "text": "title"
-    },
-    "h1": {
-      "text": "h1"
-    },
-    "body": {
-      "text": "body"
-    },
-    "content_html": {
-      "html": ".readme"
-    },
-    "anchor_text": {
-      "text": "a",
-      "isArray": true
-    },
-    "package_menu": {
-      "text": ".package-meta ul li a",
-      "isArray": true
-    },
-    "images": {
-      "attr": ".readme img",
-      "args": ["src"],
-      "isArray": true
-    },
-    "meta_description": {
-      "attr": "meta[name=description]",
-      "args": ["content"]
-    },
-    "meta_keywords": {
-      "attr": "meta[name=keywords]",
-      "args": ["content"]
-    },
-    "og:url": {
-      "attr": "meta[property=\"og:url\"]",
-      "args": ["content"]
-    },
-    "og:site_name": {
-      "attr": "meta[property=\"og:site_name\"]",
-      "args": ["content"]
-    },
-    "og:title": {
-      "attr": "meta[property=\"og:title\"]",
-      "args": ["content"]
-    },
-    "og:description": {
-      "attr": "meta[property=\"og:description\"]",
-      "args": ["content"]
-    },
-    "og:type": {
-      "attr": "meta[property=\"og:description\"]",
-      "args": ["content"]
-    },
-    "og:author": {
-      "attr": "meta[property=\"og:author\"]",
-      "args": ["content"]
-    },
-    "og:image": {
-      "attr": "meta[property=\"og:image\"]",
-      "args": ["content"]
-    },
-    "twitter:site": {
-      "attr": "meta[property=\"twitter:site\"]",
-      "args": ["content"]
-    },
-    "twitter:creator": {
-      "attr": "meta[property=\"twitter:creator\"]",
-      "args": ["content"]
-    },
-    "twitter:title": {
-      "attr": "meta[property=\"twitter:title\"]",
-      "args": ["content"]
-    },
-    "twitter:description": {
-      "attr": "meta[property=\"twitter:description\"]",
-      "args": ["content"]
-    },
-    "twitter:image:src": {
-      "attr": "meta[property=\"twitter:image:src\"]",
-      "args": ["content"],
-      "isArray": true
+  "target": [
+    {
+      "pattern": {
+        "url": "https?://.+"
+      },
+      "properties": {
+        "title": {
+          "text": "title"
+        },
+        "h1": {
+          "text": "h1"
+        },
+        "body": {
+          "text": "body"
+        },
+        "content_html": {
+          "html": ".readme"
+        },
+        "anchor_text": {
+          "text": "a",
+          "isArray": true
+        },
+        "package_menu": {
+          "text": ".package-meta ul li a",
+          "isArray": true
+        },
+        "images": {
+          "attr": ".readme img",
+          "args": ["src"],
+          "isArray": true
+        },
+        "meta_description": {
+          "attr": "meta[name=description]",
+          "args": ["content"]
+        },
+        "meta_keywords": {
+          "attr": "meta[name=keywords]",
+          "args": ["content"]
+        },
+        "og:url": {
+          "attr": "meta[property=\"og:url\"]",
+          "args": ["content"]
+        },
+        "og:site_name": {
+          "attr": "meta[property=\"og:site_name\"]",
+          "args": ["content"]
+        },
+        "og:title": {
+          "attr": "meta[property=\"og:title\"]",
+          "args": ["content"]
+        },
+        "og:description": {
+          "attr": "meta[property=\"og:description\"]",
+          "args": ["content"]
+        },
+        "og:type": {
+          "attr": "meta[property=\"og:description\"]",
+          "args": ["content"]
+        },
+        "og:author": {
+          "attr": "meta[property=\"og:author\"]",
+          "args": ["content"]
+        },
+        "og:image": {
+          "attr": "meta[property=\"og:image\"]",
+          "args": ["content"]
+        },
+        "twitter:site": {
+          "attr": "meta[property=\"twitter:site\"]",
+          "args": ["content"]
+        },
+        "twitter:creator": {
+          "attr": "meta[property=\"twitter:creator\"]",
+          "args": ["content"]
+        },
+        "twitter:title": {
+          "attr": "meta[property=\"twitter:title\"]",
+          "args": ["content"]
+        },
+        "twitter:description": {
+          "attr": "meta[property=\"twitter:description\"]",
+          "args": ["content"]
+        },
+        "twitter:image:src": {
+          "attr": "meta[property=\"twitter:image:src\"]",
+          "args": ["content"],
+          "isArray": true
+        }
+      }
     }
-  }
+  ]
 }
