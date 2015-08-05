@@ -29,6 +29,13 @@ Extract Website for Atom.
   * Settings for ``Extract Contents`` command.
   * json, yaml
   * default: json
+* JSON Indent Size
+  * Settings for ``Extract Contents`` command.
+  * default: 2
+* YAML Indent Size
+  * Settings for ``Extract Contents`` command.
+  * default: 2
+
 
 ## Customize Extract Contents
 If you want to customize the extracted item you want is to prepare a configuration file to reference the following examples.

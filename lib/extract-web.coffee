@@ -37,11 +37,11 @@ module.exports = ExtractWebsite =
       type: 'string'
       default: 'en'
     jsonIndent:
-      title: 'JSON Indent'
+      title: 'JSON Indent Size'
       type: 'integer'
       default: 2
     yamlIndent:
-      title: 'YAML Indent'
+      title: 'YAML Indent Size'
       type: 'integer'
       default: 2
 
