@@ -36,6 +36,14 @@ module.exports = ExtractWebsite =
       title: 'Accept-Language'
       type: 'string'
       default: 'en'
+    jsonIndent:
+      title: 'JSON Indent'
+      type: 'integer'
+      default: 2
+    yamlIndent:
+      title: 'YAML Indent'
+      type: 'integer'
+      default: 2
 
   activate: (state) ->
     @subscriptions = new CompositeDisposable
@@ -164,10 +172,12 @@ module.exports = ExtractWebsite =
       outputFormat = atom.config.get("extract-web.outputFormat")
 
       if outputFormat is "yaml"
-        text = yaml.dump(content, indent: 2)
+        indent = atom.config.get('extract-web.yamlIndent')
+        text = yaml.dump(content, indent: indent)
         editor.setGrammar(atom.grammars.selectGrammar('untitled.yaml'))
       else
-        text = JSON.stringify(content, null, 2)
+        indent = atom.config.get('extract-web.jsonIndent')
+        text = JSON.stringify(content, null, indent)
         editor.setGrammar(atom.grammars.selectGrammar('untitled.json'))
 
       editor.insertText(text)
