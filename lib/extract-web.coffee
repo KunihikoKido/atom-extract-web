@@ -164,11 +164,13 @@ module.exports = ExtractWebsite =
       outputFormat = atom.config.get("extract-web.outputFormat")
 
       if outputFormat is "yaml"
-        content = yaml.dump(content, indent: 2)
+        text = yaml.dump(content, indent: 2)
+        editor.setGrammar(atom.grammars.selectGrammar('untitled.yaml'))
       else
-        content = JSON.stringify(content, null, 2)
+        text = JSON.stringify(content, null, 2)
+        editor.setGrammar(atom.grammars.selectGrammar('untitled.json'))
 
-      editor.insertText(content)
+      editor.insertText(text)
     ).catch((error) ->
       notifications.addError(error)
     ).finally( ->
