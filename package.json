@@ -3,7 +3,7 @@
   "main": "./lib/extract-web",
   "version": "0.2.5",
   "description": "Extract Website for Atom",
-  "keywords": [],
+  "keywords": ["extract", "scraping", "web"],
   "activationCommands": {
     "atom-workspace": [
       "extract-web:extract-link-urls",
