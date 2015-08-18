@@ -12,8 +12,7 @@
     "atom-workspace": [
       "extract-web:extract-link-urls",
       "extract-web:extract-image-urls",
-      "extract-web:extract-contents",
-      "extract-web:extract-contents-fetch-urls"
+      "extract-web:extract-contents"
     ]
   },
   "repository": "https://github.com/KunihikoKido/atom-extract-web",
