@@ -12,7 +12,8 @@
     "atom-workspace": [
       "extract-web:extract-link-urls",
       "extract-web:extract-image-urls",
-      "extract-web:extract-contents"
+      "extract-web:extract-contents",
+      "extract-web:extract-contents-fetch-urls"
     ]
   },
   "repository": "https://github.com/KunihikoKido/atom-extract-web",
@@ -26,6 +27,7 @@
     "loophole": "^1.1.0",
     "fs-plus": "^2.8.1",
     "cheerio-httpcli": "^0.3.2",
-    "js-yaml": "^3.3.1"
+    "js-yaml": "^3.3.1",
+    "rsvp": "^3.0.21"
   }
 }

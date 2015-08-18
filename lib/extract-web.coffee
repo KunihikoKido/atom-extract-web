@@ -1,3 +1,4 @@
+RSVP = require 'rsvp'
 path = require 'path'
 fs = require 'fs-plus'
 yaml = require 'js-yaml'
@@ -8,6 +9,18 @@ urljoin = require('url').resolve
 ExtractUrlInputView = require './extract-url-input-view'
 notifications = require './notifications'
 LoadingView = require './loading-view'
+
+
+Array::unique = ->
+  output = {}
+  output[@[key]] = @[key] for key in [0...@length]
+  value for key, value of output
+
+
+# unless String::trim then String::trim = ->
+String::normalize = ->
+  value = @replace /\s{2,}|\t|\r?\n/g, " "
+  value.replace /^\s+|\s+$/g, ""
 
 
 module.exports = ExtractWebsite =
@@ -51,11 +64,19 @@ module.exports = ExtractWebsite =
     @subscriptions.add atom.commands.add 'atom-workspace', 'extract-web:extract-link-urls': => @extractUrl(params: {tag: "a", attr: "href"})
     @subscriptions.add atom.commands.add 'atom-workspace', 'extract-web:extract-image-urls': => @extractUrl(params: {tag: "img", attr: "src"})
     @subscriptions.add atom.commands.add 'atom-workspace', 'extract-web:extract-contents': => @extractContents()
-    @subscriptions.add atom.commands.add 'atom-workspace', 'extract-web:extract-contents-by-url-list': => @extractContentsByUrlList()
 
 
   deactivate: ->
     @subscriptions.dispose()
+
+  getExtractConfig: ->
+    try
+      configPath = atom.config.get("extract-web.configPath")
+      extractConfig = fs.readFileSync(configPath)
+      extractConfig = JSON.parse(extractConfig)
+    catch error
+      return
+    return extractConfig
 
   extractUrl: ({targetUrl, params}={}) ->
     params.tag ?= 'a'
@@ -88,59 +109,55 @@ module.exports = ExtractWebsite =
       urls = urls.unique().sort()
       return urls
     ).then((urls) ->
-      atom.workspace.open('').done((newEditor) ->
-        for url in urls
-          newEditor.insertText("#{url}\r\n")
-        notifications.addSuccess("Extracts : #{urls.length}")
+      editor = atom.workspace.getActiveTextEditor()
+      return unless editor?
 
-      )
+      for url in urls
+        editor.insertText("#{url}\r\n")
+
+      notifications.addSuccess("Extracts : #{urls.length}")
     ).catch((error) ->
       notifications.addError(error)
     ).finally( ->
       loadingView.finish(delay: 1000 * 1)
     )
 
-  extractContentsByUrlList: ->
+  extractContents: ->
     editor = atom.workspace.getActiveTextEditor()
     return unless editor?
 
-    lines = editor.getText().split('\r\n')
-
-    for url in lines
-      @extractContents(targetUrl: url)
-
-  extractContents: ({targetUrl}={}) ->
-    if not targetUrl
-      options =
-        callback: @extractContents
-        placeholderText: "http://example.org/..."
-      return new ExtractUrlInputView(options)
-
-    try
-      configPath = atom.config.get("extract-web.configPath")
-      extractConfig = fs.readFileSync(configPath)
-      extractConfig = JSON.parse(extractConfig)
-    catch error
-      return notifications.addError(error)
+    extractConfig = @getExtractConfig()
+    return unless extractConfig?
 
     loadingView = new LoadingView()
-    loadingView.updateMessage("Extract Contents: Please wait ... #{targetUrl}")
+    loadingView.updateMessage("Extract Contents: Please wait ...")
 
     client.headers["Accept-Language"] =
       atom.config.get("extract-web.acceptLanguage")
     client.setBrowser(atom.config.get("extract-web.userAgent"))
 
-    client.fetch(targetUrl).then((result) ->
-      docInfo = result.$.documentInfo()
-      content = {url: targetUrl, urls: [targetUrl], encode: docInfo.encoding}
+    urls = []
+    for url in editor.getText().split('\r\n')
+      if url.match(/https?:\/\/.+/)
+        urls.push(url)
 
-      if targetUrl != docInfo.url
-        content.urls.push(docInfo.url)
+    promises = urls.map((url) ->
+      return client.fetch(url)
+    )
 
+    RSVP.all(promises).then((results) ->
       extractConfig.target ?= []
+      contents = []
+      for result in results
+        content = {}
+        docInfo = result.$.documentInfo()
 
-      for target in extractConfig.target
-        if targetUrl.match(///#{target.pattern.url}///)
+        for target in extractConfig.target
+          if docInfo.url.match(///#{target.pattern.url}///)
+            content = {url: docInfo.url}
+            break
+
+        if content.url
           for property, options of target.properties
             if options.text
               if options.isArray
@@ -173,38 +190,30 @@ module.exports = ExtractWebsite =
               else
                 content[property] =
                   result.$(options.attr).attr(options.args[0])?.normalize()
-          break
+            else if options.default
+              content[property] = options.default
 
-      return content
-    ).then((content) ->
+          contents.push(content)
+      return contents
+    ).then((contents) ->
       atom.workspace.open('').done((newEditor) ->
         outputFormat = atom.config.get("extract-web.outputFormat")
 
         if outputFormat is "yaml"
           indent = atom.config.get('extract-web.yamlIndent')
-          text = yaml.dump(content, indent: indent)
+          text = yaml.dump(contents, indent: indent)
           newEditor.setGrammar(atom.grammars.selectGrammar('untitled.yaml'))
         else
           indent = atom.config.get('extract-web.jsonIndent')
-          text = JSON.stringify(content, null, indent)
+          text = JSON.stringify(contents, null, indent)
           newEditor.setGrammar(atom.grammars.selectGrammar('untitled.json'))
 
         newEditor.insertText(text)
+        newEditor.setCursorScreenPosition([0, 0])
       )
     ).catch((error) ->
+      console.error(error)
       notifications.addError(error)
     ).finally( ->
       loadingView.finish(delay: 1000 * 1)
     )
-
-
-Array::unique = ->
-  output = {}
-  output[@[key]] = @[key] for key in [0...@length]
-  value for key, value of output
-
-
-# unless String::trim then String::trim = ->
-String::normalize = ->
-  value = @replace /\s{2,}|\t|\r?\n/g, " "
-  value.replace /^\s+|\s+$/g, ""

@@ -10,6 +10,7 @@ Extract Website for Atom.
 * Extract Web: Extract Link Urls
 * Extract Web: Extract Image Urls
 * Extract Web: Extract Contents
+  * Require url list
 
 
 ## Settings
@@ -65,6 +66,9 @@ If you want to customize the extracted item you want is to prepare a configurati
         "meta_description": {
           "attr": "meta[name=description]",
           "args": ["content"]
+        },
+        "domain": {
+          "default": "atom.io"
         }
       }
     }
