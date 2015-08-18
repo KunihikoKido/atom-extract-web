@@ -78,10 +78,11 @@ module.exports = ExtractWebsite =
     client.fetch(targetUrl).then((result) ->
       urls = []
       result.$(params.tag).each((idx) ->
-        url = urljoin(targetUrl, result.$(this).attr(params.attr))
-
-        if url.match(///#{urlPattern}///)
-          urls.push(url)
+        urlPath = result.$(this).attr(params.attr)
+        if urlPath
+          url = urljoin(targetUrl, urlPath)
+          if url.match(///#{urlPattern}///)
+            urls.push(url)
       )
       urls = urls.unique().sort()
       return urls
