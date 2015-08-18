@@ -51,6 +51,7 @@ module.exports = ExtractWebsite =
     @subscriptions.add atom.commands.add 'atom-workspace', 'extract-web:extract-link-urls': => @extractUrl(params: {tag: "a", attr: "href"})
     @subscriptions.add atom.commands.add 'atom-workspace', 'extract-web:extract-image-urls': => @extractUrl(params: {tag: "img", attr: "src"})
     @subscriptions.add atom.commands.add 'atom-workspace', 'extract-web:extract-contents': => @extractContents()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'extract-web:extract-contents-by-url-list': => @extractContentsByUrlList()
 
 
   deactivate: ->
@@ -87,17 +88,26 @@ module.exports = ExtractWebsite =
       urls = urls.unique().sort()
       return urls
     ).then((urls) ->
-      editor = atom.workspace.getActiveTextEditor()
-      return unless editor?
+      atom.workspace.open('').done((newEditor) ->
+        for url in urls
+          newEditor.insertText("#{url}\r\n")
+        notifications.addSuccess("Extracts : #{urls.length}")
 
-      for url in urls
-        editor.insertText("#{url}\r\n")
-      notifications.addSuccess("Extracts : #{urls.length}")
+      )
     ).catch((error) ->
       notifications.addError(error)
     ).finally( ->
       loadingView.finish(delay: 1000 * 1)
     )
+
+  extractContentsByUrlList: ->
+    editor = atom.workspace.getActiveTextEditor()
+    return unless editor?
+
+    lines = editor.getText().split('\r\n')
+
+    for url in lines
+      @extractContents(targetUrl: url)
 
   extractContents: ({targetUrl}={}) ->
     if not targetUrl
@@ -167,21 +177,20 @@ module.exports = ExtractWebsite =
 
       return content
     ).then((content) ->
-      editor = atom.workspace.getActiveTextEditor()
-      return unless editor?
+      atom.workspace.open('').done((newEditor) ->
+        outputFormat = atom.config.get("extract-web.outputFormat")
 
-      outputFormat = atom.config.get("extract-web.outputFormat")
+        if outputFormat is "yaml"
+          indent = atom.config.get('extract-web.yamlIndent')
+          text = yaml.dump(content, indent: indent)
+          newEditor.setGrammar(atom.grammars.selectGrammar('untitled.yaml'))
+        else
+          indent = atom.config.get('extract-web.jsonIndent')
+          text = JSON.stringify(content, null, indent)
+          newEditor.setGrammar(atom.grammars.selectGrammar('untitled.json'))
 
-      if outputFormat is "yaml"
-        indent = atom.config.get('extract-web.yamlIndent')
-        text = yaml.dump(content, indent: indent)
-        editor.setGrammar(atom.grammars.selectGrammar('untitled.yaml'))
-      else
-        indent = atom.config.get('extract-web.jsonIndent')
-        text = JSON.stringify(content, null, indent)
-        editor.setGrammar(atom.grammars.selectGrammar('untitled.json'))
-
-      editor.insertText(text)
+        newEditor.insertText(text)
+      )
     ).catch((error) ->
       notifications.addError(error)
     ).finally( ->
