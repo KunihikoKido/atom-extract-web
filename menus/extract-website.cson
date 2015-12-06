@@ -6,11 +6,11 @@
       'label': 'Extract Website'
       'submenu': [
         {
-          'label': 'Extract Link Urls'
+          'label': 'Extract Link URLs'
           'command': 'extract-web:extract-link-urls'
         }
         {
-          'label': 'Extract Image Urls'
+          'label': 'Extract Image URLs'
           'command': 'extract-web:extract-image-urls'
         }
       ]

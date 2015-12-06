@@ -90,7 +90,7 @@ module.exports = ExtractWebsite =
       return new ExtractUrlInputView(options)
 
     loadingView = new LoadingView()
-    loadingView.updateMessage("Extract URL: Please wait ... #{targetUrl}")
+    loadingView.updateMessage("Extracting URL. Please wait... #{targetUrl}")
     urlPattern = atom.config.get("extract-web.urlPattern")
 
     client.headers["Accept-Language"] =
@@ -115,7 +115,7 @@ module.exports = ExtractWebsite =
       for url in urls
         editor.insertText("#{url}\r\n")
 
-      notifications.addSuccess("Extracts : #{urls.length}")
+      notifications.addSuccess("Success! Extracted #{urls.length} URLs.")
     ).catch((error) ->
       notifications.addError(error)
     ).finally( ->
@@ -130,7 +130,7 @@ module.exports = ExtractWebsite =
     return unless extractConfig?
 
     loadingView = new LoadingView()
-    loadingView.updateMessage("Extract Contents: Please wait ...")
+    loadingView.updateMessage("Extracting contents. Please wait...")
 
     client.headers["Accept-Language"] =
       atom.config.get("extract-web.acceptLanguage")
