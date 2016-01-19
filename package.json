@@ -1,7 +1,7 @@
 {
   "name": "extract-web",
   "main": "./lib/extract-web",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Extract content from web pages, including link URLs, image URLs and entire web page contents.",
   "keywords": [
     "extract",
